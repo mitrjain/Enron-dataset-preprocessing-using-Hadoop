@@ -2,8 +2,8 @@
 
 # $1 - sparkSessionName
 # $2 - hdfInputCsv
-# $3 - hdfsOutputCsvGrouped
-# $4 - hdfsOutputCsvUnGrouped
+# $3 - hdfsOutputCsvUnGrouped
+# $4 - hdfsOutputCsvGrouped
 
 if [ $# -ne 4 ];
 then

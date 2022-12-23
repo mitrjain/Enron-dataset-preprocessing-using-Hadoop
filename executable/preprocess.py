@@ -9,8 +9,9 @@ import email
 
 sparkSessionName = sys.argv[1]
 hdfInputCsv = sys.argv[2]
-hdfsOutputCsvGrouped = sys.argv[3]
-hdfsOutputCsvUnGrouped = sys.argv[4]
+hdfsOutputCsvUnGrouped = sys.argv[3]
+hdfsOutputCsvGrouped = sys.argv[4]
+
 
 # creating sparksession; entry point to creating Dataframes and using pyspark functionality
 print(sparkSessionName,": Establishing spark session")
@@ -93,18 +94,24 @@ df = df.withColumn("cleanEmailBody",cleanUDF(col("rawEmailBody")))
 print(sparkSessionName,": Cleaning complete")
 
 # Create a new dataframe by dropping the columns which are no longer required.
+print("Creating dataframe by dropping extra columns")
 df2=df.drop("rawEmailBody","id")
 df2.show()
+# Writing the newly created datframe to HDFS
+print(sparkSessionName,": Writing this newly created datframes to HDFS")
+df2.write.option("header",True).csv(hdfsOutputCsvUnGrouped)
+print(sparkSessionName,": Writing complete")
 
 # Create another new dataframe where we combine all the cleaned email bodies belonging to the same user(email id) into one single row.
 import pyspark.sql.functions as f
+print("Creating another dataframe by combining cleaned email bodies belonging to the same user into one single row")
 df3=df2.groupby("from").agg((f.concat_ws(" ", f.collect_list(df2.cleanEmailBody)).alias("cleanEmailBodies")))
 df3.show()
-
-
-# Writing the newly created datframes to HDFS
-print(sparkSessionName,": Writing the newly created datframes to HDFS")
-df2.write.option("header",True).csv(hdfsOutputCsvGrouped)
-df3.write.option("header",True).csv(hdfsOutputCsvUnGrouped)
+# Writing the newly created datframe to HDFS
+print(sparkSessionName,": Writing this newly created datframes to HDFS")
+df3.write.option("header",True).csv(hdfsOutputCsvGrouped)
 print(sparkSessionName,": Writing complete")
+
+
+
 
