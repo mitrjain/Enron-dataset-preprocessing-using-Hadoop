@@ -46,7 +46,7 @@ This application requires 4 input parameters:
 
 ### Steps to run the application
 - Navigate to the /executable direcotr
-- execute the follwing command
+- execute the following command
 
 `./execute.sh {sparkSessionName} {hdfInputCsv} {hdfsOutputCsvUnGrouped} {hdfsOutputCsvGrouped}`
 
@@ -54,6 +54,11 @@ This application requires 4 input parameters:
 The preprocessing/cleaning prowess of this application can be extended by placing the desired code inside (at the end) the clean() present in the /executable/preprocess.py file.
 
 
-
-
-
+## Environment specifications
+Following are the specifications of the environment on which this application was last executed: 
+- GCP dataproc: Spark(yarn-based) cluster. Image version - 1.5 (Ubuntu 18.04 LTS, Hadoop 2.10, Spark 2.4)
+- Architecture: 1 Master - 4 Worker nodes.
+- VM type: n1-standard-4
+- VM specs: Ubuntu 18.04 LTS, 15GB RAM, 100GB Standard Persistent Disk 
+- conda version: 4.7.12
+- python version: 3.7.4
